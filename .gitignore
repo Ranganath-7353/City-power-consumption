@@ -1,0 +1,10 @@
+
+# Local environment
+.venv/
+.DS_Store
+__pycache__/
+*.pyc
+
+# Large generated files
+models/*.pkl
+output/
