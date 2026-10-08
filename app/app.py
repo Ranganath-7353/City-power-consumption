@@ -96,39 +96,53 @@ if predict_btn:
  
     st.subheader("📊 Power Consumption Trend Simulation")
 
-    noise = np.random.normal(0, 400, 12)
-    trend = prediction + np.cumsum(noise)
-
-    fig, ax = plt.subplots()
-    ax.plot(trend, marker='o', linewidth=2)
-    ax.set_facecolor("#0f172a")
-    ax.set_title("Forecast Trend", color="white")
-    ax.set_xlabel("Time")
-    ax.set_ylabel("Power")
-
-    st.pyplot(fig)
-
-
-    st.subheader("📌 AI Feature Importance")
-
-    features = [
+    environmental_factors = [
         "Temperature",
         "Humidity",
         "Wind Speed",
         "General Diffuse",
-        "Diffuse",
+        "Diffuse Flows",
         "AQI",
         "Cloudiness"
     ]
 
-    importance = model.feature_importances_
+    values = [
+        temperature,
+        humidity,
+        wind_speed,
+        general_diffuse,
+        diffuse,
+        aqi,
+        cloudiness
+    ]
 
-    fig2, ax2 = plt.subplots()
-    ax2.barh(features, importance, color="#38bdf8")
-    ax2.set_title("Feature Impact", color="white")
+    fig, ax = plt.subplots(figsize=(10, 5))
 
-    st.pyplot(fig2)
+    bars = ax.bar(
+        environmental_factors,
+        values,
+        color="#38bdf8",
+        edgecolor="black"
+    )
 
+    # Display values on top of each bar
+    for bar in bars:
+        height = bar.get_height()
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            height,
+            f"{height:.1f}",
+            ha="center",
+            va="bottom",
+            fontsize=9,
+            fontweight="bold"
+        )
+
+    ax.set_title("Current Environmental Conditions")
+    ax.set_xlabel("Environmental Factors")
+    ax.set_ylabel("Measured Values")
+    ax.tick_params(axis="x", rotation=20)
+    st.pyplot(fig)
   
     csv = pd.DataFrame({
         "Temperature": [temperature],
